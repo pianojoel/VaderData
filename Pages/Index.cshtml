@@ -1,0 +1,64 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">VäderData</h1>
+    <p>Inlämningsuppgift ITHS Jan 2021</p>
+    <p>Av Joel Lindberg</p>
+</div>
+
+<canvas id="myChart" width="400" height="200"></canvas>
+<script>
+
+    //let data = @Json.Serialize(Model.Data);
+    //let labels = data.map(d => d.dateTime.slice(0, 10));
+    let labels = @Json.Serialize(Model.Labels);
+    let temp = @Json.Serialize(Model.Temperature);
+    let humidity = @Json.Serialize(Model.Humidity);
+    let moldRisk = @Json.Serialize(Model.Moldrisk);
+
+
+
+    //let temp = data.map(d => d.temperature);
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [
+            {
+            label: 'Utomhustemperatur',
+                data: temp,
+                
+                borderColor: 'red',
+            borderWidth: 1
+            },
+            {
+                label: 'Luftfuktighet',
+                data: humidity,
+                borderWidth: 1,
+                borderColor: 'green'
+            },
+            {
+                label: 'Mögelrisk',
+                data: moldRisk,
+                borderWidth: 1,
+                borderColor: 'black'
+            }
+
+        ]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
