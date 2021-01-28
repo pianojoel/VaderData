@@ -17,7 +17,10 @@ namespace VaderData
             
         public static void Main(string[] args)
         {
+            //Uncomment to insert text data to db. Only do this once.
             //ReadData.Read();
+
+
             CreateHostBuilder(args).Build().Run();
         }
 

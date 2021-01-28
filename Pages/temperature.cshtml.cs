@@ -16,31 +16,21 @@ namespace VaderData.Pages
         [BindProperty]
         public bool Desc { get; set; }
         public string Message { get; set; }
+        //Sort by temperature when landing on page 
         public void OnGet()
         {
+            
             Desc = true;
             Location = "Ute";
             OnPostSortByTemperature();
-            //using (var db = new WdContext())
-            //{
-            //    Data = db.WeatherDataSet
-            //        .Where(w => w.Location == "Ute")
-            //        .GroupBy(d => d.DateTime.Date)
-            //        .Select(g => new OutdoorData
-            //        {
-            //            DateTime = g.Key,
-            //            Temperature = g.Average(g => g.Temperature),
-            //            Humidity = g.Average(g => g.Humidity)
-            //        })
-            //        // MoldRisk = ((Humidity - 78) * (Temperature / 15)) / 0.22
-            //        .OrderBy(t => t.Temperature).ToList();
-            //}
-            //// ((fuktighet - 78) * (temperatur / 15)) / 0,22
+           
         }
+        //This is for updating the list automatically when the location has changed
         public void OnPost()
         {
             OnPostSortByDate();
         }
+        //The rest are handlers for the sorting options
         public void OnPostSortByDate()
         {
             Data = GetData();
@@ -104,12 +94,11 @@ namespace VaderData.Pages
             }
             Message = "Visar data sorterat på temperatur " + (Desc ? "stigande" : "fallande");
         }
+        //The query
         public List<DisplayData> GetData()
         {
             using (var db = new WdContext())
             {
-
-
                 return db.WeatherDataSet
                         .Where(w => w.Location == Location)
                         .GroupBy(d => d.DateTime.Date)
@@ -126,15 +115,7 @@ namespace VaderData.Pages
 
             using (var db = new WdContext())
             {
-                //var q = db.WeatherDataSet.Where(d => d.Location == "Ute")
-                //        .GroupBy(d => d.DateTime.Date)
-                //        .Select(g => new DisplayData
-                //        {
-                //            DateTime = g.Key,
-                //            Temperature = g.Average(g => g.Temperature)
-                //        })
-                //        .OrderBy(w => w.DateTime.Date)
-                //        .ToList();
+                
                 Location = "Ute";
                 var q = GetData().OrderBy(w => w.DateTime.Date).ToList();
                 for (int i = 0; i < q.Count() - 5; i++)

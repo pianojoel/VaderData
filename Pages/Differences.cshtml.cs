@@ -22,6 +22,7 @@ namespace VaderData.Pages
         {
             using (var db = new WdContext())
             {
+                //Calculate average indoor temperatures 
                 var IndoorAvg = db.WeatherDataSet
                     .Where(w => w.Location == "Inne")
                     .GroupBy(d => d.DateTime.Date)
@@ -30,8 +31,9 @@ namespace VaderData.Pages
                         DateTime = g.Key,
                         Temperature = g.Average(g => g.Temperature)
                     })
-                    .OrderBy(t => t.DateTime).ToList();
-
+                    .OrderBy(t => t.DateTime)
+                    .ToList();
+                //Calculate average outdoor temperatures 
                 var OutDoorAvg = db.WeatherDataSet
                     .Where(w => w.Location == "Ute")
                     .GroupBy(d => d.DateTime.Date)
@@ -41,8 +43,9 @@ namespace VaderData.Pages
                         DateTime = g.Key,
                         Temperature = g.Average(g => g.Temperature)
                     })
-                    .OrderBy(t => t.DateTime).ToList();
-
+                    .OrderBy(t => t.DateTime)
+                    .ToList();
+                //Calculate temperature difference for each day, project into AvgDiffData display class
                 Data = IndoorAvg.Select(i => new AvgDiffData
                 {
                     DateTime = i.DateTime,
